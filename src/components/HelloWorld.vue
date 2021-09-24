@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
-defineProps<{ msg: string }>()
+defineProps<{ msg: string }>();
 
-const count = ref(0)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
+const count = ref(0);
 </script>
 
 <template>

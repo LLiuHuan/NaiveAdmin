@@ -1,8 +1,8 @@
-import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
-import {PageEnum} from "@/enums/pageEnum";
-import {App} from "vue";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import { PageEnum } from "@/enums/pageEnum";
+import { App } from "vue";
 
-const modules = import.meta.globEager('./modules/**/*.ts');
+const modules = import.meta.globEager("./modules/**/*.ts");
 
 const routeModuleList: RouteRecordRaw[] = [];
 
@@ -18,28 +18,27 @@ function sortRoute(a: any, b: any) {
 
 routeModuleList.sort(sortRoute);
 
-
 export const RootRouter: RouteRecordRaw = {
-  path: '/',
-  name: 'Root',
+  path: "/",
+  name: "Root",
   redirect: PageEnum.BASE_HOME,
   meta: {
-    title: 'Root',
-  }
-}
+    title: "Root",
+  },
+};
 
 //需要验证权限
 export const asyncRoutes = [...routeModuleList];
 
 //普通路由 无需验证权限
-export const constantRouter: any[] = [RootRouter, ...routeModuleList]
+export const constantRouter: any[] = [RootRouter, ...routeModuleList];
 
 const router = createRouter({
-  history: createWebHashHistory(''),
+  history: createWebHashHistory(""),
   routes: constantRouter,
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 }),
-})
+});
 
 export function setupRouter(app: App) {
   app.use(router);

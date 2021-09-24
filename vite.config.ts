@@ -1,21 +1,19 @@
-import type {UserConfig, ConfigEnv} from 'vite';
-import {loadEnv} from 'vite';
-import {defineConfig} from 'vite'
-import vue from '@vitejs/plugin-vue'
-import {wrapperEnv} from "./build/utils";
-import {resolve} from "path";
-
+import type { UserConfig, ConfigEnv } from "vite";
+import { loadEnv } from "vite";
+import vue from "@vitejs/plugin-vue";
+import { wrapperEnv } from "./build/utils";
+import { resolve } from "path";
 
 function pathResolve(dir: string) {
-  return resolve(process.cwd(), '.', dir);
+  return resolve(process.cwd(), ".", dir);
 }
 
 // https://vitejs.dev/config/
-export default ({command, mode}: ConfigEnv): UserConfig => {
+export default ({ mode }: ConfigEnv): UserConfig => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
-  const viteEnv = wrapperEnv(env)
-  const {VITE_PORT} = viteEnv;
+  const viteEnv = wrapperEnv(env);
+  const { VITE_PORT } = viteEnv;
   return {
     plugins: [vue()],
     esbuild: {},
@@ -23,19 +21,18 @@ export default ({command, mode}: ConfigEnv): UserConfig => {
       alias: [
         {
           find: /\/#\//,
-          replacement: pathResolve('types') + '/',
+          replacement: pathResolve("types") + "/",
         },
         {
-          find: '@',
-          replacement: pathResolve('src') + '/',
+          find: "@",
+          replacement: pathResolve("src") + "/",
         },
       ],
-      dedupe: ['vue'],
+      dedupe: ["vue"],
     },
     server: {
       host: true,
-      port: VITE_PORT
-
-    }
+      port: VITE_PORT,
+    },
   };
 };

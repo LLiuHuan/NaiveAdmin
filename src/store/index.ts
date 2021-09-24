@@ -1,8 +1,10 @@
-import {createLogger, createStore} from "vuex";
-import {store as setting, SettingStore, State as SettingState} from './setting'
-import {state} from "./setting/state";
-import {App} from "vue";
-
+import { createStore } from "vuex";
+import {
+  store as setting,
+  SettingStore,
+  State as SettingState,
+} from "./setting";
+import { App } from "vue";
 
 // // 在开发环境中开启logger
 // const debug = import.meta.env.DEV;
@@ -17,24 +19,24 @@ import {App} from "vue";
 // })] : [];
 
 export type RootState = {
-  setting: SettingState,
-}
+  setting: SettingState;
+};
 
-export type Store = SettingStore<Pick<RootState, 'setting'>>
+export type Store = SettingStore<Pick<RootState, "setting">>;
 
 const store = createStore<RootState>({
   modules: {
-    setting
-  }
-})
+    setting,
+  },
+});
 
 export function useStore(): Store {
-  return store as Store
+  return store as Store;
 }
 
 export function setupStore(app: App<Element>) {
-  app.use(store)
-  console.log(store, 'vuex')
+  app.use(store);
+  console.log(store, "vuex");
 }
 
 export default store;

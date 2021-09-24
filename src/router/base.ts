@@ -1,22 +1,22 @@
-import type { AppRouteRecordRaw } from '@/router/types';
-import { ErrorPage, RedirectName, Layout } from '@/router/constant';
+import type { AppRouteRecordRaw } from "@/router/types";
+import { ErrorPage, RedirectName, Layout } from "@/router/constant";
 
 // 404 on a page
 export const ErrorPageRoute: AppRouteRecordRaw = {
-  path: '/:path(.*)*',
-  name: 'ErrorPage',
+  path: "/:path(.*)*",
+  name: "ErrorPage",
   component: Layout,
   meta: {
-    title: 'ErrorPage',
+    title: "ErrorPage",
     hideBreadcrumb: true,
   },
   children: [
     {
-      path: '/:path(.*)*',
-      name: 'ErrorPageSon',
+      path: "/:path(.*)*",
+      name: "ErrorPageSon",
       component: ErrorPage,
       meta: {
-        title: 'ErrorPage',
+        title: "ErrorPage",
         hideBreadcrumb: true,
       },
     },
@@ -24,7 +24,7 @@ export const ErrorPageRoute: AppRouteRecordRaw = {
 };
 
 export const RedirectRoute: AppRouteRecordRaw = {
-  path: '/redirect',
+  path: "/redirect",
   name: RedirectName,
   component: Layout,
   meta: {
@@ -33,9 +33,9 @@ export const RedirectRoute: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: '/redirect/:path(.*)',
+      path: "/redirect/:path(.*)",
       name: RedirectName,
-      component: () => import('@/views/redirect/index.vue'),
+      component: () => import("@/views/redirect/index.vue"),
       meta: {
         title: RedirectName,
         hideBreadcrumb: true,

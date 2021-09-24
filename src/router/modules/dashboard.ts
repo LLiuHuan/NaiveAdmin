@@ -1,7 +1,7 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import { RouteRecordRaw } from "vue-router";
+import { Layout } from "@/router/constant";
 
-const routeName = 'dashboard';
+const routeName = "dashboard";
 
 /**
  * @param name 路由名称, 必须设置,且不能重名
@@ -15,14 +15,18 @@ const routeName = 'dashboard';
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/dashboard',
+    path: "/dashboard",
     name: routeName,
     component: Layout,
     meta: {
-      title: 'Dashboard',
-      permissions: ['dashboard_console', 'dashboard_console', 'dashboard_workplace'],
+      title: "Dashboard",
+      permissions: [
+        "dashboard_console",
+        "dashboard_console",
+        "dashboard_workplace",
+      ],
       sort: 0,
-    }
+    },
   },
 ];
 // const routes: Array<RouteRecordRaw> = [

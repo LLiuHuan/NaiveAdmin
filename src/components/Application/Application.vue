@@ -1,10 +1,10 @@
 <template>
   <NLoadingBarProvider>
     <NDialogProvider>
-      <DialogContent/>
+      <DialogContent />
       <NNotificationProvider>
         <NMessageProvider>
-          <MessageContent/>
+          <MessageContent />
           <slot slot="default"></slot>
         </NMessageProvider>
       </NNotificationProvider>
@@ -13,15 +13,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import { defineComponent } from "vue";
 import {
   NDialogProvider,
   NNotificationProvider,
   NMessageProvider,
-  NLoadingBarProvider
-} from 'naive-ui'
-import {DialogContent} from '@/components/DialogContent';
-import {MessageContent} from '@/components/MessageContent';
+  NLoadingBarProvider,
+} from "naive-ui";
+import { DialogContent } from "@/components/DialogContent";
+import { MessageContent } from "@/components/MessageContent";
 
 export default defineComponent({
   name: "Application",
@@ -34,11 +34,9 @@ export default defineComponent({
     MessageContent,
   },
   setup() {
-    return {}
-  }
-})
+    return {};
+  },
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
