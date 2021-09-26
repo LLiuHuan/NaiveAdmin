@@ -3,7 +3,9 @@ import {
   store as setting,
   SettingStore,
   State as SettingState,
-} from "./setting";
+} from "./modules/setting";
+
+import { store as menu, MenuStore, State as MenuState } from "./modules/menu";
 import { App } from "vue";
 
 // // 在开发环境中开启logger
@@ -20,13 +22,16 @@ import { App } from "vue";
 
 export type RootState = {
   setting: SettingState;
+  menu: MenuState;
 };
 
-export type Store = SettingStore<Pick<RootState, "setting">>;
+export type Store = SettingStore<Pick<RootState, "setting">> &
+  MenuStore<Pick<RootState, "menu">>;
 
 const store = createStore<RootState>({
   modules: {
     setting,
+    menu,
   },
 });
 

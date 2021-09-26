@@ -17,6 +17,10 @@
       :native-scrollbar="false"
     >
       <Logo :collapsed="collapsed" />
+      <AsideMenu
+        v-model:collapsed="collapsed"
+        v-model:location="getMenuLocation"
+      />
     </NLayoutSider>
     <NLayout>
       <NLayoutHeader :inverted="getHeaderInverted" :position="fixedHeader">
@@ -34,7 +38,7 @@
             'fluid-header': fixedHeader === 'static',
           }"
         >
-          <NH2>首页内容</NH2>
+          <RouterView />
         </div>
       </NLayoutContent>
       <NLayoutFooter class="flex justify-center">
@@ -49,6 +53,7 @@ import { defineComponent, computed, unref, ref } from "vue";
 import { useStore } from "vuex";
 import { Logo } from "./components/Logo";
 import { PageHeader } from "./components/Header";
+import { AsideMenu } from "./components/Menu";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -56,6 +61,7 @@ export default defineComponent({
   components: {
     Logo,
     PageHeader,
+    AsideMenu,
   },
   setup() {
     const store = useStore();
@@ -63,7 +69,7 @@ export default defineComponent({
     // 是否显示logo
     const collapsed = ref<boolean>(false);
     // 导航模式 vertical 左侧菜单模式 horizontal 顶部菜单模式
-    const navMode = store.getters.getNavMode;
+    const navMode = store.getters.getProjectNavMode;
 
     // 固定顶部 absolute or static
     const fixedMenu = computed(() => {
@@ -94,12 +100,14 @@ export default defineComponent({
 
     // 导航风格 dark 暗色侧边栏 light 白色侧边栏 header-dark 暗色顶栏
     const inverted = computed(() => {
-      return ["dark", "header-dark"].includes(unref(store.getters.getNavTheme));
+      return ["dark", "header-dark"].includes(
+        unref(store.getters.getProjectNavTheme)
+      );
     });
 
     // 获取头部的导航风格
     const getHeaderInverted = computed(() => {
-      const navTheme = unref(store.getters.getNavTheme);
+      const navTheme = unref(store.getters.getProjectNavTheme);
       return ["light", "header-dark"].includes(navTheme)
         ? unref(inverted)
         : !unref(inverted);
@@ -116,6 +124,10 @@ export default defineComponent({
       return unref(store.getters.getMultiTabsSetting).fixed;
     });
 
+    const getMenuLocation = computed(() => {
+      return "left";
+    });
+
     return {
       fixedMenu,
       collapsed,
@@ -127,6 +139,7 @@ export default defineComponent({
       fixedHeader,
       darkTheme,
       fixedMulti,
+      getMenuLocation,
     };
   },
 });

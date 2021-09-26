@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { PageEnum } from "@/enums/pageEnum";
+import { RedirectRoute } from "@/router/base";
 import { App } from "vue";
 
 const modules = import.meta.globEager("./modules/**/*.ts");
@@ -31,7 +32,11 @@ export const RootRouter: RouteRecordRaw = {
 export const asyncRoutes = [...routeModuleList];
 
 //普通路由 无需验证权限
-export const constantRouter: any[] = [RootRouter, ...routeModuleList];
+export const constantRouter: any[] = [
+  RedirectRoute,
+  RootRouter,
+  ...routeModuleList,
+];
 
 const router = createRouter({
   history: createWebHashHistory(""),
@@ -43,6 +48,12 @@ const router = createRouter({
 export function setupRouter(app: App) {
   app.use(router);
 
+  // 动态添加可访问路由表
+  asyncRoutes.forEach((item) => {
+    console.log(item);
+    router.addRoute(item as unknown as RouteRecordRaw);
+  });
+  console.log(router);
   // 创建路由守卫
   // createRouterGuards(router);
 }

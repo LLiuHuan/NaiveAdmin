@@ -1,9 +1,14 @@
 import designSetting from "@/settings/designSetting";
-import { IheaderSetting, ImenuSetting, ImultiTabsSetting } from "/#/config";
+import {
+  IHeaderSetting,
+  IMenuSetting,
+  IMultiTabsSetting,
+  IProjectSetting,
+} from "/#/config";
 import projectSetting from "@/settings/projectSetting";
 
 const { darkTheme, appTheme, appThemeList } = designSetting;
-const { headerSetting, navMode, menuSetting, navTheme, multiTabsSetting } =
+const { headerSetting, menuSetting, multiTabsSetting, baseSetting } =
   projectSetting;
 
 export type State = {
@@ -15,24 +20,22 @@ export type State = {
   appThemeList: string[];
 
   //顶部设置
-  headerSetting: IheaderSetting;
-  //导航模式
-  navMode: string;
+  headerSetting: IHeaderSetting;
   //菜单
-  menuSetting: ImenuSetting;
+  menuSetting: IMenuSetting;
   //多标签
-  multiTabsSetting: ImultiTabsSetting;
-  //导航风格
-  navTheme: string;
+  multiTabsSetting: IMultiTabsSetting;
+  //系统
+  projectSetting: IProjectSetting;
 };
 
 export const state: State = {
   darkTheme: darkTheme,
   appTheme: appTheme,
   appThemeList: appThemeList,
+
   headerSetting: headerSetting,
-  navMode: navMode,
   menuSetting: menuSetting,
-  navTheme: navTheme,
   multiTabsSetting: multiTabsSetting,
+  projectSetting: baseSetting,
 };

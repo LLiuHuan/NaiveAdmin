@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { defineComponent, onBeforeMount } from "vue";
+import { defineComponent, h, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { NEmpty } from "naive-ui";
 
@@ -11,12 +11,13 @@ export default defineComponent({
     onBeforeMount(() => {
       const { params, query } = route;
       const { path } = params;
+      console.log("/" + (Array.isArray(path) ? path.join("/") : path));
       router.replace({
         path: "/" + (Array.isArray(path) ? path.join("/") : path),
         query,
       });
     });
-    return () => <NEmpty />;
+    return () => h(NEmpty);
   },
 });
 </script>

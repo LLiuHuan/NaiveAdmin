@@ -1,17 +1,23 @@
 import { State } from "./state";
 import { GetterTree } from "vuex";
 import { RootState } from "@/store";
-import { IheaderSetting, ImenuSetting, ImultiTabsSetting } from "/#/config";
+import {
+  IHeaderSetting,
+  IMenuSetting,
+  IMultiTabsSetting,
+  IProjectSetting,
+} from "/#/config";
 
 export type Getters = {
   getDarkTheme(state: State): boolean;
   getAppTheme(state: State): string;
   getAppThemeList(state: State): string[];
-  getHeaderSetting(state: State): IheaderSetting;
-  getNavMode(state: State): string;
-  getMenuSetting(state: State): ImenuSetting;
-  getNavTheme(state: State): string;
-  getMultiTabsSetting(state: State): ImultiTabsSetting;
+  getHeaderSetting(state: State): IHeaderSetting;
+  getProjectNavMode(state: State): string;
+  getMenuSetting(state: State): IMenuSetting;
+  getProjectNavTheme(state: State): string;
+  getMultiTabsSetting(state: State): IMultiTabsSetting;
+  getProjectSetting(state: State): IProjectSetting;
 };
 
 export const getters: GetterTree<State, RootState> & Getters = {
@@ -19,8 +25,9 @@ export const getters: GetterTree<State, RootState> & Getters = {
   getAppTheme: (state) => state.appTheme,
   getAppThemeList: (state) => state.appThemeList,
   getHeaderSetting: (state) => state.headerSetting,
-  getNavMode: (state) => state.navMode,
+  getProjectNavMode: (state) => state.projectSetting.navMode,
   getMenuSetting: (state) => state.menuSetting,
-  getNavTheme: (state) => state.navTheme,
+  getProjectNavTheme: (state) => state.projectSetting.navTheme,
   getMultiTabsSetting: (state) => state.multiTabsSetting,
+  getProjectSetting: (state) => state.projectSetting,
 };

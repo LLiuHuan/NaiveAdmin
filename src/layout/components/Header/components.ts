@@ -14,6 +14,8 @@ import {
   CheckOutlined,
 } from "@vicons/antd";
 
+import { GithubAlt } from "@vicons/fa";
+
 export default {
   SettingOutlined,
   LockOutlined,
@@ -28,4 +30,5 @@ export default {
   LogoutOutlined,
   UserOutlined,
   CheckOutlined,
+  GithubAlt,
 };

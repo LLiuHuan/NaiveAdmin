@@ -1,5 +1,6 @@
 <template>
   <div class="layout-header">
+    <!--  左侧菜单  -->
     <div class="layout-header-left">
       <!-- 菜单收起 -->
       <div
@@ -13,8 +14,34 @@
           <MenuFoldOutlined />
         </NIcon>
       </div>
+      <!-- 刷新 -->
+      <div
+        class="mr-1 layout-header-trigger layout-header-trigger-min"
+        v-if="headerSetting.isReload"
+        @click="reloadPage"
+      >
+        <n-icon size="18">
+          <ReloadOutlined />
+        </n-icon>
+      </div>
     </div>
+    <!--  右侧菜单  -->
     <div class="layout-header-right">
+      <!--   动态图标按钮   -->
+      <div
+        class="layout-header-trigger layout-header-trigger-min"
+        v-for="item in iconList"
+        :key="item.icon.name"
+      >
+        <n-tooltip placement="bottom">
+          <template #trigger>
+            <n-icon size="18">
+              <component :is="item.icon" v-on="item.eventObject || {}" />
+            </n-icon>
+          </template>
+          <span>{{ item.tips }}</span>
+        </n-tooltip>
+      </div>
       <!--切换全屏-->
       <div class="layout-header-trigger layout-header-trigger-min">
         <NTooltip placement="bottom">
@@ -26,13 +53,33 @@
           <span>全屏</span>
         </NTooltip>
       </div>
+      <!-- 个人中心 -->
+      <div class="layout-header-trigger layout-header-trigger-min">
+        <n-dropdown
+          trigger="hover"
+          @select="avatarSelect"
+          :options="avatarOptions"
+        >
+          <div class="avatar">
+            <n-avatar round>
+              admin
+              <template #icon>
+                <UserOutlined />
+              </template>
+            </n-avatar>
+          </div>
+        </n-dropdown>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
+import { defineComponent, reactive, toRefs, unref } from "vue";
 import components from "./components";
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+import { useDialog, useMessage } from "naive-ui";
 
 export default defineComponent({
   name: "PageHeader",
@@ -47,10 +94,43 @@ export default defineComponent({
       type: Boolean,
     },
   },
+  emits: ["update:collapsed"],
   setup() {
+    const store = useStore();
+    const router = useRouter();
+    const route = useRoute();
+    const dialog = useDialog();
+    const message = useMessage();
+
     const state = reactive({
       fullscreenIcon: "FullscreenOutlined",
+      iconList: [
+        {
+          icon: "GithubAlt",
+          tips: "github",
+          eventObject: {
+            click: () => window.open("https://github.com/LLiuHuan/NaiveAdmin"),
+          },
+        },
+      ],
+      avatarOptions: [
+        {
+          label: "个人设置",
+          key: 1,
+        },
+        {
+          type: "divider",
+          key: "d1",
+        },
+        {
+          label: "退出登录",
+          key: 2,
+        },
+      ],
     });
+
+    // header 变量
+    const headerSetting = store.getters.getHeaderSetting;
 
     // 全屏切换
     const toggleFullScreen = () => {
@@ -63,9 +143,46 @@ export default defineComponent({
       }
     };
 
+    // 刷新页面
+    const reloadPage = () => {
+      router.push({
+        path: "/redirect" + unref(route).fullPath,
+      });
+    };
+
+    //头像下拉菜单
+    const avatarSelect = (key: number) => {
+      switch (key) {
+        case 1:
+          router.push({ name: "Setting" });
+          break;
+        case 2:
+          doLogout();
+          break;
+      }
+    };
+
+    // 退出登录
+    const doLogout = () => {
+      dialog.info({
+        title: "提示",
+        content: "您确定要退出登录吗",
+        positiveText: "确定",
+        negativeText: "取消",
+        onPositiveClick: () => {
+          message.success("成功退出登录");
+        },
+        onNegativeClick: () => {},
+      });
+    };
+
     return {
       ...toRefs(state),
+      headerSetting,
       toggleFullScreen,
+
+      reloadPage,
+      avatarSelect,
     };
   },
 });

@@ -11,7 +11,7 @@ import { AppProvider } from "@/components/Application";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 const getDarkTheme = computed(() =>
-  useStore().getters.darkTheme ? darkTheme : undefined
+  useStore().getters.getDarkTheme ? darkTheme : undefined
 );
 </script>
 

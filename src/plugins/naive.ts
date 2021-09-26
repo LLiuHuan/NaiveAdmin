@@ -18,10 +18,18 @@ import {
   NIcon,
   NTooltip,
   NEmpty,
+  NDropdown,
+  NAvatar,
+  NDivider,
+  NMenu,
 } from "naive-ui";
 
 const naive = create({
   components: [
+    NMenu,
+    NDivider,
+    NAvatar,
+    NDropdown,
     NEmpty,
     NTooltip,
     NIcon,
