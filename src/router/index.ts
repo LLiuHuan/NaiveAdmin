@@ -28,13 +28,23 @@ export const RootRouter: RouteRecordRaw = {
   },
 };
 
+export const LoginRoute: RouteRecordRaw = {
+  path: "/login",
+  name: "Login",
+  component: () => import("@/views/login/index.vue"),
+  meta: {
+    title: "登录",
+  },
+};
+
 //需要验证权限
 export const asyncRoutes = [...routeModuleList];
 
 //普通路由 无需验证权限
 export const constantRouter: any[] = [
-  RedirectRoute,
+  LoginRoute,
   RootRouter,
+  RedirectRoute,
   ...routeModuleList,
 ];
 
@@ -46,6 +56,7 @@ const router = createRouter({
 });
 
 export function setupRouter(app: App) {
+  console.log(router);
   app.use(router);
 
   // 动态添加可访问路由表

@@ -1,4 +1,6 @@
 // header
+import { RouteLocationNormalized } from "vue-router";
+
 export interface IHeaderSetting {
   bgColor: string; // 背景颜色
   fixed: boolean; // 是否固定
@@ -35,3 +37,15 @@ export interface IProjectSetting {
   //路由动画类型
   pageAnimateType: string;
 }
+
+// 面包屑
+export interface ICrumbsSetting {
+  show: boolean;
+  showIcon: boolean;
+}
+
+// Tabs
+export type RouteItem = Partial<RouteLocationNormalized> & {
+  fullPath: string;
+  name: string;
+};

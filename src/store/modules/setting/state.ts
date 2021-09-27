@@ -1,5 +1,6 @@
 import designSetting from "@/settings/designSetting";
 import {
+  ICrumbsSetting,
   IHeaderSetting,
   IMenuSetting,
   IMultiTabsSetting,
@@ -8,8 +9,13 @@ import {
 import projectSetting from "@/settings/projectSetting";
 
 const { darkTheme, appTheme, appThemeList } = designSetting;
-const { headerSetting, menuSetting, multiTabsSetting, baseSetting } =
-  projectSetting;
+const {
+  headerSetting,
+  menuSetting,
+  multiTabsSetting,
+  baseSetting,
+  crumbsSetting,
+} = projectSetting;
 
 export type State = {
   //深色主题
@@ -27,6 +33,8 @@ export type State = {
   multiTabsSetting: IMultiTabsSetting;
   //系统
   projectSetting: IProjectSetting;
+  //面包屑
+  crumbsSetting: ICrumbsSetting; //面包屑
 };
 
 export const state: State = {
@@ -38,4 +46,5 @@ export const state: State = {
   menuSetting: menuSetting,
   multiTabsSetting: multiTabsSetting,
   projectSetting: baseSetting,
+  crumbsSetting: crumbsSetting,
 };

@@ -4,8 +4,8 @@ import {
   SettingStore,
   State as SettingState,
 } from "./modules/setting";
-
 import { store as menu, MenuStore, State as MenuState } from "./modules/menu";
+import { store as tabs, TabsStore, State as TabsState } from "./modules/tabs";
 import { App } from "vue";
 
 // // 在开发环境中开启logger
@@ -23,15 +23,18 @@ import { App } from "vue";
 export type RootState = {
   setting: SettingState;
   menu: MenuState;
+  tabs: TabsState;
 };
 
 export type Store = SettingStore<Pick<RootState, "setting">> &
-  MenuStore<Pick<RootState, "menu">>;
+  MenuStore<Pick<RootState, "menu">> &
+  TabsStore<Pick<RootState, "tabs">>;
 
 const store = createStore<RootState>({
   modules: {
     setting,
     menu,
+    tabs,
   },
 });
 
@@ -41,7 +44,6 @@ export function useStore(): Store {
 
 export function setupStore(app: App<Element>) {
   app.use(store);
-  console.log(store, "vuex");
 }
 
 export default store;

@@ -38,7 +38,17 @@
             'fluid-header': fixedHeader === 'static',
           }"
         >
-          <RouterView />
+          <TagsView v-if="isMultiTabs" v-model:collapsed="collapsed" />
+          <div
+            class="main-view"
+            :class="{
+              'main-view-fix': fixedMulti,
+              noMultiTabs: !isMultiTabs,
+              'mt-3': !isMultiTabs,
+            }"
+          >
+            <RouterView />
+          </div>
         </div>
       </NLayoutContent>
       <NLayoutFooter class="flex justify-center">
@@ -54,6 +64,7 @@ import { useStore } from "vuex";
 import { Logo } from "./components/Logo";
 import { PageHeader } from "./components/Header";
 import { AsideMenu } from "./components/Menu";
+import { TagsView } from "./components/TagsView";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -62,6 +73,7 @@ export default defineComponent({
     Logo,
     PageHeader,
     AsideMenu,
+    TagsView,
   },
   setup() {
     const store = useStore();
@@ -128,6 +140,10 @@ export default defineComponent({
       return "left";
     });
 
+    const isMultiTabs = computed(() => {
+      return unref(store.getters.getMultiTabsSetting).show;
+    });
+
     return {
       fixedMenu,
       collapsed,
@@ -140,6 +156,7 @@ export default defineComponent({
       darkTheme,
       fixedMulti,
       getMenuLocation,
+      isMultiTabs,
     };
   },
 });

@@ -24,6 +24,33 @@
           <ReloadOutlined />
         </n-icon>
       </div>
+      <!-- 面包屑 -->
+      <n-breadcrumb v-if="crumbsSetting.show">
+        <template v-for="routeItem in breadcrumbList" :key="routeItem.name">
+          <n-breadcrumb-item>
+            <n-dropdown
+              v-if="routeItem.children.length"
+              :options="routeItem.children"
+              @select="dropdownSelect"
+            >
+              <span class="link-text">
+                <component
+                  v-if="crumbsSetting.showIcon && routeItem.meta.icon"
+                  :is="routeItem.meta.icon"
+                />
+                {{ routeItem.meta.title }}
+              </span>
+            </n-dropdown>
+            <span class="link-text" v-else>
+              <component
+                v-if="crumbsSetting.showIcon && routeItem.meta.icon"
+                :is="routeItem.meta.icon"
+              />
+              {{ routeItem.meta.title }}
+            </span>
+          </n-breadcrumb-item>
+        </template>
+      </n-breadcrumb>
     </div>
     <!--  右侧菜单  -->
     <div class="layout-header-right">
@@ -75,10 +102,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, unref } from "vue";
+import { computed, defineComponent, reactive, toRefs, unref } from "vue";
 import components from "./components";
 import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
+import { RouteLocationMatched, useRoute, useRouter } from "vue-router";
 import { useDialog, useMessage } from "naive-ui";
 
 export default defineComponent({
@@ -131,6 +158,17 @@ export default defineComponent({
 
     // header 变量
     const headerSetting = store.getters.getHeaderSetting;
+    const crumbsSetting = store.getters.getCrumbsSetting;
+
+    // 切换全屏图标
+    const toggleFullscreenIcon = () =>
+      (state.fullscreenIcon =
+        document.fullscreenElement !== null
+          ? "FullscreenExitOutlined"
+          : "FullscreenOutlined");
+
+    // 监听全屏切换事件
+    document.addEventListener("fullscreenchange", toggleFullscreenIcon);
 
     // 全屏切换
     const toggleFullScreen = () => {
@@ -176,13 +214,42 @@ export default defineComponent({
       });
     };
 
+    const generator: any = (routerMap: RouteLocationMatched[]) => {
+      return routerMap.map((item) => {
+        const currentMenu = {
+          ...item,
+          label: item.meta.title,
+          key: item.name,
+          disabled: item.path === "/",
+        };
+        // 是否有子菜单，并递归处理
+        if (item.children && item.children.length > 0) {
+          // Recursion
+          currentMenu.children = generator(item.children, currentMenu);
+        }
+        return currentMenu;
+      });
+    };
+
+    // 面包屑
+    const breadcrumbList = computed(() => {
+      return generator(route.matched);
+    });
+
+    const dropdownSelect = (key: any) => {
+      router.push({ name: key });
+    };
+
     return {
       ...toRefs(state),
       headerSetting,
+      crumbsSetting,
       toggleFullScreen,
 
       reloadPage,
       avatarSelect,
+      breadcrumbList,
+      dropdownSelect,
     };
   },
 });

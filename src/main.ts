@@ -4,8 +4,13 @@ import App from "./App.vue";
 import { setupNaive } from "./plugins/naive";
 import { setupStore } from "./store";
 import { setupRouter } from "./router";
+// @ts-ignore
+import MakeitCaptcha from "makeit-captcha";
+import "makeit-captcha/dist/captcha.min.css";
 
 const app = createApp(App);
+
+app.use(MakeitCaptcha);
 
 // 注册 naive-ui 组件
 setupNaive(app);

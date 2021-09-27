@@ -1,5 +1,5 @@
 <template>
-  <Nh1>工作台</Nh1>
+  <NH1>工作台</NH1>
 </template>
 
 <script lang="ts">

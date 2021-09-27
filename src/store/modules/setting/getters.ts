@@ -2,6 +2,7 @@ import { State } from "./state";
 import { GetterTree } from "vuex";
 import { RootState } from "@/store";
 import {
+  ICrumbsSetting,
   IHeaderSetting,
   IMenuSetting,
   IMultiTabsSetting,
@@ -18,6 +19,7 @@ export type Getters = {
   getProjectNavTheme(state: State): string;
   getMultiTabsSetting(state: State): IMultiTabsSetting;
   getProjectSetting(state: State): IProjectSetting;
+  getCrumbsSetting(state: State): ICrumbsSetting;
 };
 
 export const getters: GetterTree<State, RootState> & Getters = {
@@ -30,4 +32,5 @@ export const getters: GetterTree<State, RootState> & Getters = {
   getProjectNavTheme: (state) => state.projectSetting.navTheme,
   getMultiTabsSetting: (state) => state.multiTabsSetting,
   getProjectSetting: (state) => state.projectSetting,
+  getCrumbsSetting: (state) => state.crumbsSetting,
 };
