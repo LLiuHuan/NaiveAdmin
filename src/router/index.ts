@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { PageEnum } from "@/enums/pageEnum";
 import { RedirectRoute } from "@/router/base";
 import { App } from "vue";
+import { createRouterGuards } from "@/router/router-guards";
 
 const modules = import.meta.globEager("./modules/**/*.ts");
 

@@ -6,6 +6,7 @@ import {
 } from "./modules/setting";
 import { store as menu, MenuStore, State as MenuState } from "./modules/menu";
 import { store as tabs, TabsStore, State as TabsState } from "./modules/tabs";
+import { store as user, UserStore, State as UserState } from "./modules/user";
 import { App } from "vue";
 
 // // 在开发环境中开启logger
@@ -24,17 +25,20 @@ export type RootState = {
   setting: SettingState;
   menu: MenuState;
   tabs: TabsState;
+  user: UserState;
 };
 
 export type Store = SettingStore<Pick<RootState, "setting">> &
   MenuStore<Pick<RootState, "menu">> &
-  TabsStore<Pick<RootState, "tabs">>;
+  TabsStore<Pick<RootState, "tabs">> &
+  UserStore<Pick<RootState, "user">>;
 
 const store = createStore<RootState>({
   modules: {
     setting,
     menu,
     tabs,
+    user,
   },
 });
 

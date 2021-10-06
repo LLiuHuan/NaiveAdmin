@@ -114,6 +114,9 @@ import {
   LogoGithub,
   LogoFacebook,
 } from "@vicons/ionicons5";
+import { useStore } from "vuex";
+import { ActionsType } from "@/store/modules/user/actions";
+import { ResultEnum } from "@/enums/httpEnum";
 
 export default defineComponent({
   name: "Login",
@@ -148,41 +151,47 @@ export default defineComponent({
         type: "boolean",
         trigger: "change",
         message: "请点击按钮进行验证码校验",
-        // validator: (_, value) => value === true,
+        validator: (_, value) => value === true,
       },
     };
 
     const router = useRouter();
     const route = useRoute();
+    const store = useStore();
 
     const handleSubmit = (e: any) => {
       e.preventDefault();
       formRef.value.validate(async (errors: any) => {
         if (!errors) {
           const { username, password } = formInline;
-          message.loading("登录中...");
+          const messageLoad = message.loading("登录中...");
           loading.value = true;
 
           const params: FormState = {
             username,
             password,
           };
-
-          // const { code, message: msg } = await userStore.login(params);
-          //
-          // if (code == ResultEnum.SUCCESS) {
-          const toPath = decodeURIComponent(
-            (route.query?.redirect || "/") as string
+          const { code, message: msg } = await store.dispatch(
+            ActionsType.LOGIN,
+            params
           );
-          message.success("登录成功！");
-          router.replace(toPath).then((_) => {
-            if (route.name == "login") {
-              router.replace("/");
-            }
-          });
-          // } else {
-          //   message.info(msg || "登录失败");
-          // }
+          // const { code, message: msg } = await userStore.login(params);
+
+          messageLoad.destroy();
+
+          if (code == ResultEnum.SUCCESS) {
+            const toPath = decodeURIComponent(
+              (route.query?.redirect || "/") as string
+            );
+            message.success("登录成功！");
+            router.replace(toPath).then((_) => {
+              if (route.name == "login") {
+                router.replace("/");
+              }
+            });
+          } else {
+            message.info(msg || "登录失败");
+          }
         } else {
           message.error("请填写完整信息，并且进行验证码校验");
         }
