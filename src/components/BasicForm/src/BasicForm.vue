@@ -1,132 +1,136 @@
 <template>
-  <NForm v-bind="getBindValue" :model="formModel" ref="formElRef">
-    <NGrid v-bind="getGrid">
-      <!--form的前半部分-->
-      <NGi
-        v-bind="schema.giProps"
-        v-for="schema in getSchema"
-        :key="schema.field"
-      >
-        <NFormItem :label="schema.label" :path="schema.field">
-          <!--标签名右侧的温馨提示-->
-          <template #label v-if="schema.labelMessage">
-            {{ schema.label }}
-            <NTooltip trigger="hover" :style="schema.labelMessageStyle">
-              <template #trigger>
-                <NIcon size="18" class="cursor-pointer text-gray-400">
-                  <QuestionCircleOutlined />
-                </NIcon>
-              </template>
-              {{ schema.labelMessage }}
-            </NTooltip>
-          </template>
-
-          <!--判断插槽-->
-          <template v-if="schema.slot">
-            <slot
-              :name="schema.slot"
-              :model="formModel"
-              :field="schema.field"
-              :value="formModel[schema.field]"
-            ></slot>
-          </template>
-
-          <!--复选框 NCheckbox-->
-          <template v-else-if="schema.component === 'NCheckbox'">
-            <n-checkbox-group v-model:value="formModel[schema.field]">
-              <n-space>
-                <n-checkbox
-                  v-for="item in schema.componentProps.options"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                />
-              </n-space>
-            </n-checkbox-group>
-          </template>
-
-          <!--单选框 NRadioGroup-->
-          <template v-else-if="schema.component === 'NRadioGroup'">
-            <n-radio-group v-model:value="formModel[schema.field]">
-              <n-space>
-                <n-radio
-                  v-for="item in schema.componentProps.options"
-                  :key="item.value"
-                  :value="item.value"
-                >
-                  {{ item.label }}
-                </n-radio>
-              </n-space>
-            </n-radio-group>
-          </template>
-
-          <!--动态渲染表单组件-->
-          <component
-            v-else
-            v-bind="getComponentProps(schema)"
-            :is="schema.component"
-            v-model:value="formModel[schema.field]"
-            :class="{ isFull: schema.isFull !== false && getProps.isFull }"
-          />
-
-          <!--组件后面的内容-->
-          <template v-if="schema.suffix">
-            <slot
-              :name="schema.suffix"
-              :model="formModel"
-              :field="schema.field"
-              :value="formModel[schema.field]"
-            ></slot>
-          </template>
-        </NFormItem>
-      </NGi>
-      <NGi
-        :span="isInline ? '' : 24"
-        :suffix="!!isInline"
-        #="{ overflow }"
-        v-if="getProps.showActionButtonGroup"
-      >
-        <NSpace
-          align="center"
-          :justify="isInline ? 'end' : 'start'"
-          :style="{ 'margin-left': `${isInline ? 12 : getProps.labelWidth}px` }"
+  <n-card>
+    <NForm v-bind="getBindValue" :model="formModel" ref="formElRef">
+      <NGrid v-bind="getGrid">
+        <!--form的前半部分-->
+        <NGi
+          v-bind="schema.giProps"
+          v-for="schema in getSchema"
+          :key="schema.field"
         >
-          <NButton
-            v-if="getProps.showSubmitButton"
-            v-bind="getSubmitBtnOptions"
-            @click="handleSubmit"
-            :loading="loadingSub"
-          >
-            {{ getProps.submitButtonText }}
-          </NButton>
-          <NButton
-            v-if="getProps.showResetButton"
-            v-bind="getResetBtnOptions"
-            @click="resetFields"
-          >
-            {{ getProps.resetButtonText }}
-          </NButton>
-          <NButton
-            type="primary"
-            text
-            icon-placement="right"
-            v-if="isInline && getProps.showAdvancedButton"
-            @click="unfoldToggle"
-          >
-            <template #icon>
-              <n-icon size="14" class="unfold-icon" v-if="overflow">
-                <DownOutlined />
-              </n-icon>
-              <n-icon size="14" class="unfold-icon" v-else>
-                <UpOutlined />
-              </n-icon>
+          <NFormItem :label="schema.label" :path="schema.field">
+            <!--标签名右侧的温馨提示-->
+            <template #label v-if="schema.labelMessage">
+              {{ schema.label }}
+              <NTooltip trigger="hover" :style="schema.labelMessageStyle">
+                <template #trigger>
+                  <NIcon size="18" class="cursor-pointer text-gray-400">
+                    <QuestionCircleOutlined />
+                  </NIcon>
+                </template>
+                {{ schema.labelMessage }}
+              </NTooltip>
             </template>
-            {{ overflow ? "展开" : "收起" }}
-          </NButton>
-        </NSpace>
-      </NGi>
-    </NGrid>
-  </NForm>
+
+            <!--判断插槽-->
+            <template v-if="schema.slot">
+              <slot
+                :name="schema.slot"
+                :model="formModel"
+                :field="schema.field"
+                :value="formModel[schema.field]"
+              ></slot>
+            </template>
+
+            <!--复选框 NCheckbox-->
+            <template v-else-if="schema.component === 'NCheckbox'">
+              <n-checkbox-group v-model:value="formModel[schema.field]">
+                <n-space>
+                  <n-checkbox
+                    v-for="item in schema.componentProps.options"
+                    :key="item.value"
+                    :value="item.value"
+                    :label="item.label"
+                  />
+                </n-space>
+              </n-checkbox-group>
+            </template>
+
+            <!--单选框 NRadioGroup-->
+            <template v-else-if="schema.component === 'NRadioGroup'">
+              <n-radio-group v-model:value="formModel[schema.field]">
+                <n-space>
+                  <n-radio
+                    v-for="item in schema.componentProps.options"
+                    :key="item.value"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </n-radio>
+                </n-space>
+              </n-radio-group>
+            </template>
+
+            <!--动态渲染表单组件-->
+            <component
+              v-else
+              v-bind="getComponentProps(schema)"
+              :is="schema.component"
+              v-model:value="formModel[schema.field]"
+              :class="{ isFull: schema.isFull !== false && getProps.isFull }"
+            />
+
+            <!--组件后面的内容-->
+            <template v-if="schema.suffix">
+              <slot
+                :name="schema.suffix"
+                :model="formModel"
+                :field="schema.field"
+                :value="formModel[schema.field]"
+              ></slot>
+            </template>
+          </NFormItem>
+        </NGi>
+        <NGi
+          :span="isInline ? '' : 24"
+          :suffix="isInline ? true : false"
+          #="{ overflow }"
+          v-if="getProps.showActionButtonGroup"
+        >
+          <NSpace
+            align="center"
+            :justify="isInline ? 'end' : 'start'"
+            :style="{
+              'margin-left': `${isInline ? 12 : getProps.labelWidth}px`,
+            }"
+          >
+            <NButton
+              v-if="getProps.showSubmitButton"
+              v-bind="getSubmitBtnOptions"
+              @click="handleSubmit"
+              :loading="loadingSub"
+            >
+              {{ getProps.submitButtonText }}
+            </NButton>
+            <NButton
+              v-if="getProps.showResetButton"
+              v-bind="getResetBtnOptions"
+              @click="resetFields"
+            >
+              {{ getProps.resetButtonText }}
+            </NButton>
+            <NButton
+              type="primary"
+              text
+              icon-placement="right"
+              v-if="isInline && getProps.showAdvancedButton"
+              @click="unfoldToggle"
+            >
+              <template #icon>
+                <n-icon size="14" class="unfold-icon" v-if="overflow">
+                  <DownOutlined />
+                </n-icon>
+                <n-icon size="14" class="unfold-icon" v-else>
+                  <UpOutlined />
+                </n-icon>
+              </template>
+              {{ overflow ? "展开" : "收起" }}
+            </NButton>
+          </NSpace>
+        </NGi>
+      </NGrid>
+    </NForm>
+  </n-card>
 </template>
 
 <script lang="ts">
@@ -148,6 +152,8 @@ import { DownOutlined, UpOutlined, QuestionCircleOutlined } from "@vicons/antd";
 import { createPlaceholderMessage } from "@/components/BasicForm/src/helper";
 import { ComponentType } from "@/components/BasicForm/src/types";
 import { useFormValues } from "@/components/BasicForm/src/hooks/useFormValues";
+import { useFormEvents } from "@/components/BasicForm/src/hooks/useFormEvents";
+import { deepMerge } from "@/utils";
 
 export default defineComponent({
   name: "BasicForm",
@@ -234,6 +240,7 @@ export default defineComponent({
     const getSchema = computed((): FormSchema[] => {
       const schemas: FormSchema[] =
         unref(schemaRef) || (unref(getProps).schemas as any);
+      console.log(schemas);
       for (const schema of schemas) {
         const { defaultValue } = schema;
         // handle date type
@@ -287,6 +294,10 @@ export default defineComponent({
       loadingSub,
       handleFormValues,
     });
+
+    async function setProps(formProps: Partial<FormProps>): Promise<void> {
+      propsRef.value = deepMerge(unref(propsRef) || {}, formProps);
+    }
 
     const formActionType: Partial<FormActionType> = {
       getFieldsValue,
