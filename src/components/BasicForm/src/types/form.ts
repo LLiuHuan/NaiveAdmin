@@ -56,6 +56,14 @@ export interface FormActionType {
   validate: (nameList?: any[]) => Promise<any>; // 验证表单
 }
 
+export interface FormPermission {
+  add: [];
+  edit: [];
+  del: [];
+  sub: [];
+  reset: [];
+}
+
 export type RegisterFn = (formInstance: FormActionType) => void;
 
 export type UseFormReturnType = [RegisterFn, FormActionType];

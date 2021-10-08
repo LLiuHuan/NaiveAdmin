@@ -99,6 +99,7 @@
               v-bind="getSubmitBtnOptions"
               @click="handleSubmit"
               :loading="loadingSub"
+              v-permission="permission.sub"
             >
               {{ getProps.submitButtonText }}
             </NButton>
@@ -106,6 +107,7 @@
               v-if="getProps.showResetButton"
               v-bind="getResetBtnOptions"
               @click="resetFields"
+              v-permission="permission.reset"
             >
               {{ getProps.resetButtonText }}
             </NButton>

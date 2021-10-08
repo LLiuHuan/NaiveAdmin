@@ -1,5 +1,8 @@
 import { propTypes } from "@/components/BasicForm/src/types/propTypes";
-import { FormSchema } from "@/components/BasicForm/src/types/form";
+import {
+  FormPermission,
+  FormSchema,
+} from "@/components/BasicForm/src/types/form";
 import { ButtonProps } from "naive-ui/lib/button";
 import { GridItemProps, GridProps } from "naive-ui/lib/grid";
 import { CSSProperties } from "vue";
@@ -79,5 +82,10 @@ export const basicProps = {
   collapsedRows: {
     type: Number,
     default: 1,
+  },
+  // 按钮权限控制
+  permission: {
+    type: Object as PropType<FormPermission>,
+    default: null,
   },
 };

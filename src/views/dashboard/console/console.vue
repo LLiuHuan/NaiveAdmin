@@ -7,7 +7,12 @@
     <CrudOperation :permission="permission" />
   </div>
 
-  <BasicForm @register="register" @submit="handleSubmit" @reset="handleReset">
+  <BasicForm
+    @register="register"
+    @submit="handleSubmit"
+    @reset="handleReset"
+    :permission="permission"
+  >
     <template #statusSlot="{ model, field }">
       <n-input v-model:value="model[field]" />
     </template>
@@ -27,9 +32,11 @@ export default defineComponent({
   },
   setup() {
     const permission = {
-      add: ["admin", "job:add"],
-      edit: ["admin", "job:edit"],
-      del: ["admin", "job:del"],
+      add: ["admin", "console:add"],
+      edit: ["admin", "console:edit"],
+      del: ["admin", "console:del"],
+      sub: ["admin", "console:sub"],
+      reset: ["admin", "console:reset"],
     };
 
     const schemas = [
